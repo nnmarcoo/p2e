@@ -1,3 +1,5 @@
+use egui::{vec2, Window};
+
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
@@ -66,6 +68,10 @@ impl eframe::App for TemplateApp {
         });
 
         egui::CentralPanel::default().show(ctx, |ui| {
+            Window::new("Canvas")
+                .default_size(vec2(512., 512.))
+                .show(ctx, |_ui| {});
+
             // The central panel the region left after adding TopPanel's and SidePanel's
             ui.heading("eframe template");
 
