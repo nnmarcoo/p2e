@@ -2,10 +2,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 mod app;
+mod components;
 
-// When compiling natively:
 #[cfg(not(target_arch = "wasm32"))]
 fn main() -> eframe::Result {
+    use app::P2e;
+
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
 
     let native_options = eframe::NativeOptions {
@@ -21,13 +23,14 @@ fn main() -> eframe::Result {
     eframe::run_native(
         "p2e",
         native_options,
-        Box::new(|cc| Ok(Box::new(app::TemplateApp::new(cc)))),
+        Box::new(|cc| Ok(Box::new(P2e::new(cc)))),
     )
 }
 
 // When compiling to web using trunk:
 #[cfg(target_arch = "wasm32")]
 fn main() {
+    use app::P2e;
     use eframe::wasm_bindgen::JsCast as _;
 
     // Redirect `log` message to `console.log` and friends:
@@ -51,7 +54,7 @@ fn main() {
             .start(
                 canvas,
                 web_options,
-                Box::new(|cc| Ok(Box::new(app::TemplateApp::new(cc)))),
+                Box::new(|cc| Ok(Box::new(P2e::new(cc)))),
             )
             .await;
 
