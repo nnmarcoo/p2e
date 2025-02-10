@@ -1,18 +1,20 @@
 use eframe::{get_value, set_value, App, CreationContext, Frame, Storage, APP_KEY};
-use egui::{menu, widgets, CentralPanel, Context, TopBottomPanel, ViewportCommand, Window};
+use egui::{CentralPanel, Context, Window};
 
-use crate::components::canvas::Canvas;
+use crate::components::{canvas::Canvas, menu_bar::MenuBar};
 
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)]
 pub struct P2e {
     canvas: Canvas,
+    menu_bar: MenuBar,
 }
 
 impl Default for P2e {
     fn default() -> Self {
         Self {
             canvas: Canvas::new([512, 512]),
+            menu_bar: MenuBar::new(),
         }
     }
 }
@@ -32,20 +34,7 @@ impl App for P2e {
     }
 
     fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
-        TopBottomPanel::top("top_panel").show(ctx, |ui| {
-            menu::bar(ui, |ui| {
-                let is_web = cfg!(target_arch = "wasm32");
-                if !is_web {
-                    ui.menu_button("File", |ui| {
-                        if ui.button("Quit").clicked() {
-                            ctx.send_viewport_cmd(ViewportCommand::Close);
-                        }
-                    });
-                    ui.add_space(16.0);
-                }
-                widgets::global_theme_preference_buttons(ui);
-            });
-        });
+        self.menu_bar.update(ctx);
 
         CentralPanel::default().show(ctx, |_ui| {
             Window::new("Input")
