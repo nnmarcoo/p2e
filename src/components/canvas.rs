@@ -37,7 +37,7 @@ impl Canvas {
             }
         });
 
-        let _texture = self.texture.get_or_insert_with(|| {
+        self.texture.get_or_insert_with(|| {
             ctx.load_texture(
                 "canvas_texture",
                 self.canvas.clone(),
