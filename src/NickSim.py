@@ -20,3 +20,10 @@ random.seed(1)
 G = fill_img(n,m,0,255)
 random.seed(2)
 B = fill_img(n,m,0,255)
+
+#Nick's Proposed method #1 (flatten the matrix and specify to "compressor" how many pixels per row)
+R = R.flatten()
+G = G.flatten()
+B = B.flatten()
+
+print(R)
